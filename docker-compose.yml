@@ -1,0 +1,46 @@
+version: '2'
+
+services:
+  app-db:
+    image: mdillon/postgis
+    environment:
+      POSTGRES_PASSWORD: secret_pass
+      POSTGRES_USER: app
+      POSTGRES_DB: app
+
+  web:
+    restart: always
+    environment:
+      - DJANGO_SECRET_KEY=local
+      - ENVIRONMENT=dev
+      - DJANGO_SETTINGS_MODULE=birdman.config.local
+    image: web3
+    build: ""
+    command: >
+      bash -c "pip install -r requirements.txt &&
+               python wait_for_postgres.py &&
+               ./manage.py migrate &&
+               ./manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - app-db
+
+  gis-service:
+    build: v1/gis_service
+    image: gis-service
+    restart: always
+    volumes:
+      - ./v1/gis_service/:/code
+    ports:
+      - "9974:9974"
+  documentation:
+    restart: always
+    build: ""
+    command: "mkdocs serve"
+    volumes:
+      - ./:/code
+    ports:
+      - "8001:8001"

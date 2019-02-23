@@ -1,0 +1,4 @@
+apiVersion: v1
+description: Micro service to update latitude and longitude in Cowork models asynchronously.
+name: gis-service
+version: 0.0.1
