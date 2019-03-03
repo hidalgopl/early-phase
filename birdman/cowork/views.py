@@ -12,7 +12,7 @@ from .serializers import CoWorkSerializer
 class SearchCoworkView(ListAPIView):
     queryset = Cowork.objects.all()
     serializer_class = CoWorkSerializer
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
 
     @staticmethod
     def get_peer_and_user_pins(request):
@@ -24,7 +24,7 @@ class SearchCoworkView(ListAPIView):
 
     def get_buffer(self, request):
         lat, lon = self.get_peer_and_user_pins(request)
-        point = Point(lat, lon , srid=4326)
+        point = Point(lat, lon, srid=4326)
         return point
 
     def filter_queryset(self, queryset):

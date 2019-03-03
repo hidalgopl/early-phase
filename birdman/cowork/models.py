@@ -1,15 +1,12 @@
-from django.db import models
+import requests
 from django.conf import settings
 from django.contrib.gis.db import models as gis_models
 from django.contrib.gis.geos import Point
-
+from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
-import requests
 from django.utils.http import quote_plus
 
-from .decorators import prevent_recursion
 from .services import CoworkService
 
 
@@ -34,7 +31,7 @@ class Cowork(models.Model):
     def save(self, *args, **kwargs):
         try:
             self.point = Point(self.address.lon, self.address.lat)
-        except:
+        except:  # noqa
             self.point = Point(0., 0.)
         super().save(*args, **kwargs)
 
@@ -62,12 +59,13 @@ class Facilities(models.Model):
 
 
 @receiver(post_save, sender=Cowork, dispatch_uid="update_coords")
-def get_coords_from_gis_service(instance=None, created=False,  *args, **kwargs):
+def get_coords_from_gis_service(instance=None, created=False, *args, **kwargs):
     # Call gis-service pod to get coords and save them
     print("receiver")
     # if not instance.pk:
     print("instance.pk")
-    full_url = "http://gis-service:9974/?address_id={}&address={}".format(instance.address.pk, instance.address_query)
+    full_url = "http://gis-service:9974/?address_id={}&address={}".\
+        format(instance.address.pk, instance.address_query)
     print(full_url)
     resp = requests.get(full_url)
     data = resp.json()

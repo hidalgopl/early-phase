@@ -1,9 +1,7 @@
 from django.utils import timezone
-
 from rest_framework import serializers
 
 from birdman.cowork.utils import calculate_distance
-
 from .models import Cowork
 
 

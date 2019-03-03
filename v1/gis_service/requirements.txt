@@ -4,3 +4,4 @@ djangorestframework==3.9.0
 peewee==3.7.1
 peewee-async==0.6.0a0
 requests
+pytest

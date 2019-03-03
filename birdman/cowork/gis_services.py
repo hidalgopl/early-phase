@@ -29,6 +29,8 @@ class OpenStreetMapAPIHandler:
         except KeyError:
             return None, None
         return float(lat), float(lon)
+
+
 """
 Decoupled databases:
 POI database:

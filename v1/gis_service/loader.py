@@ -1,13 +1,11 @@
-from aiohttp import web
-
 import logging
-import peewee_async
-
-from rest_framework import status
 
 import config as service_config
 import models
+import peewee_async
 import services
+from aiohttp import web
+from rest_framework import status
 
 
 class Loader:
@@ -27,7 +25,9 @@ class Loader:
         gis_service = services.CoworkService()
         lat, lon = await gis_service.get_coords(args.get('address'))
         try:
-            address, created = await objects.get_or_create(models.Address, address_id=int(args.get('address_id')), lat=lat, lon=lon)
+            address, created = await objects.get_or_create(
+                models.Address, address_id=int(args.get('address_id')),
+                lat=lat, lon=lon)
         except models.Address.DoesNotExist:
             body = {"error": "Missing address_id param"}
             return web.json_response(data=body, status=status.HTTP_400_BAD_REQUEST)

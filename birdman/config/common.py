@@ -23,11 +23,14 @@ class Common(Configuration):
         'rest_framework.authtoken',  # token authentication
         'django_filters',            # for filtering rest endpoints
         'rest_framework_filters',
+        'django_extensions',
 
         # Your apps
         'birdman.users',
         'birdman.core',
         'birdman.cowork',
+        'birdman.user_history',
+        'birdman.visits',
 
     )
 

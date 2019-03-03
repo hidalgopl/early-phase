@@ -7,3 +7,15 @@ class OpenStreetMapMock:
 
     def get_lat_lon(self, query):
         return 52.1, 21.2
+
+
+async def get_or_create(self, model_, defaults=None, **kwargs):
+    """Try to get an object or create it with the specified defaults.
+
+    Return 2-tuple containing the model instance and a boolean
+    indicating whether the instance was created.
+    """
+    class Address:
+        lat = 54.3
+        lon = 43.2
+    return Address(), False
